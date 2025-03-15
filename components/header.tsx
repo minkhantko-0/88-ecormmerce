@@ -26,11 +26,6 @@ export default function Header() {
         <div className='flex items-center justify-between gap-6'>
           <ThemeToggle />
 
-          <SignedOut>
-            <SignInButton mode='modal'>
-              <Button size='sm'>Sign in</Button>
-            </SignInButton>
-          </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>
