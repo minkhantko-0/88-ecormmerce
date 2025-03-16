@@ -5,6 +5,7 @@ import { SignedIn, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Menu, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Separator } from './ui/separator';
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -16,48 +17,158 @@ export default function Header() {
   const toggleDesktopSubmenu = () => setDesktopSubmenuOpen(!desktopSubmenuOpen);
 
   return (
-    <header className='relative py-4'>
-      <nav className='container mx-auto flex items-center justify-between px-4'>
-        {/* Logo / Brand */}
-        <Link href='/' className='text-xl font-bold'>
-          88 Online Shop
-        </Link>
+    <>
+      <header className='relative py-4'>
+        <nav className='container mx-auto flex items-center justify-between px-4'>
+          {/* Logo / Brand */}
+          <Link href='/' className='text-xl font-bold'>
+            88 Online Shop
+          </Link>
 
-        {/* Desktop Navigation */}
-        <div className='hidden items-center gap-10 sm:flex'>
-          <ul className='flex gap-6 text-sm font-medium'>
-            <li>
-              <Link href='/'>Home</Link>
-            </li>
-            <li>
-              <Link href='/products'>Products</Link>
-            </li>
-            <li>
-              <Link href='/categories'>Categories</Link>
-            </li>
-            <li>
-              <Link href='/types'>Types</Link>
-            </li>
-            <SignedIn>
-              <li className='relative'>
-                <button
-                  onClick={toggleDesktopSubmenu}
-                  className='flex items-center gap-1 focus:outline-none'
-                >
-                  Console{' '}
-                  {desktopSubmenuOpen ? (
-                    <ChevronUp className='h-4 w-4' />
-                  ) : (
-                    <ChevronDown className='h-4 w-4' />
+          {/* Desktop Navigation */}
+          <div className='hidden items-center gap-10 sm:flex'>
+            <ul className='flex gap-6 text-sm font-medium'>
+              <li>
+                <Link href='/'>Home</Link>
+              </li>
+              <li>
+                <Link href='/products'>Products</Link>
+              </li>
+              <li>
+                <Link href='/categories'>Categories</Link>
+              </li>
+              <li>
+                <Link href='/types'>Types</Link>
+              </li>
+              <SignedIn>
+                <li className='relative'>
+                  <button
+                    onClick={toggleDesktopSubmenu}
+                    className='flex items-center gap-1 focus:outline-none'
+                  >
+                    Console{' '}
+                    {desktopSubmenuOpen ? (
+                      <ChevronUp className='h-4 w-4' />
+                    ) : (
+                      <ChevronDown className='h-4 w-4' />
+                    )}
+                  </button>
+                  {desktopSubmenuOpen && (
+                    <div className='absolute left-0 top-full z-10 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:bg-gray-800'>
+                      <ul className='py-1'>
+                        <li>
+                          <Link
+                            href='/protected/products'
+                            className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'
+                          >
+                            Add Products
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href='/protected/categories'
+                            className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'
+                          >
+                            Add Category
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href='/protected/types'
+                            className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'
+                          >
+                            Add Type
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   )}
-                </button>
-                {desktopSubmenuOpen && (
-                  <div className='absolute left-0 top-full z-10 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:bg-gray-800'>
-                    <ul className='py-1'>
+                </li>
+              </SignedIn>
+            </ul>
+            <div className='flex items-center gap-6'>
+              <ThemeToggle />
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
+          </div>
+
+          {/* Mobile Header Icons */}
+          <div className='flex items-center gap-4 sm:hidden'>
+            <ThemeToggle />
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <button
+              onClick={toggleDrawer}
+              className='rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
+              aria-label='Toggle menu'
+            >
+              {drawerOpen ? (
+                <X className='h-6 w-6' />
+              ) : (
+                <Menu className='h-6 w-6' />
+              )}
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile Drawer Overlay */}
+        <div
+          className={`fixed inset-0 z-40 bg-black bg-opacity-50 transition-opacity duration-300 ${
+            drawerOpen ? 'visible opacity-100' : 'invisible opacity-0'
+          }`}
+          onClick={toggleDrawer}
+        ></div>
+
+        {/* Mobile Drawer Menu */}
+        <aside
+          className={`fixed left-0 top-0 z-50 h-full w-64 transform bg-white shadow-md transition-transform duration-300 dark:bg-gray-800 ${
+            drawerOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          <div className='p-4'>
+            <ul className='flex flex-col gap-4'>
+              <li>
+                <Link href='/' onClick={() => setDrawerOpen(false)}>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href='/products' onClick={() => setDrawerOpen(false)}>
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link href='/categories' onClick={() => setDrawerOpen(false)}>
+                  Categories
+                </Link>
+              </li>
+              <li>
+                <Link href='/types' onClick={() => setDrawerOpen(false)}>
+                  Types
+                </Link>
+              </li>
+              <SignedIn>
+                <li>
+                  <button
+                    onClick={toggleMobileSubmenu}
+                    className='flex w-full items-center justify-between py-2 font-medium focus:outline-none'
+                  >
+                    Console &nbsp;
+                    {mobileSubmenuOpen ? (
+                      <ChevronUp className='h-4 w-4' />
+                    ) : (
+                      <ChevronDown className='h-4 w-4' />
+                    )}
+                  </button>
+                  {mobileSubmenuOpen && (
+                    <ul className='flex flex-col gap-2 text-xs'>
                       <li>
                         <Link
                           href='/protected/products'
-                          className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'
+                          onClick={() => setDrawerOpen(false)}
                         >
                           Add Products
                         </Link>
@@ -65,7 +176,7 @@ export default function Header() {
                       <li>
                         <Link
                           href='/protected/categories'
-                          className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'
+                          onClick={() => setDrawerOpen(false)}
                         >
                           Add Category
                         </Link>
@@ -73,127 +184,20 @@ export default function Header() {
                       <li>
                         <Link
                           href='/protected/types'
-                          className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700'
+                          onClick={() => setDrawerOpen(false)}
                         >
                           Add Type
                         </Link>
                       </li>
                     </ul>
-                  </div>
-                )}
-              </li>
-            </SignedIn>
-          </ul>
-          <div className='flex items-center gap-6'>
-            <ThemeToggle />
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </div>
-        </div>
-
-        {/* Mobile Header Icons */}
-        <div className='flex items-center gap-4 sm:hidden'>
-          <ThemeToggle />
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          <button
-            onClick={toggleDrawer}
-            className='rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary'
-            aria-label='Toggle menu'
-          >
-            {drawerOpen ? (
-              <X className='h-6 w-6' />
-            ) : (
-              <Menu className='h-6 w-6' />
-            )}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Drawer Overlay */}
-      <div
-        className={`fixed inset-0 z-40 bg-black bg-opacity-50 transition-opacity duration-300 ${
-          drawerOpen ? 'visible opacity-100' : 'invisible opacity-0'
-        }`}
-        onClick={toggleDrawer}
-      ></div>
-
-      {/* Mobile Drawer Menu */}
-      <aside
-        className={`fixed left-0 top-0 z-50 h-full w-64 transform bg-white shadow-md transition-transform duration-300 dark:bg-gray-800 ${
-          drawerOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        <div className='p-4'>
-          <ul className='flex flex-col gap-4'>
-            <li>
-              <Link href='/' onClick={() => setDrawerOpen(false)}>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href='/products' onClick={() => setDrawerOpen(false)}>
-                Products
-              </Link>
-            </li>
-            <li>
-              <Link href='/categories' onClick={() => setDrawerOpen(false)}>
-                Categories
-              </Link>
-            </li>
-            <li>
-              <Link href='/types' onClick={() => setDrawerOpen(false)}>
-                Types
-              </Link>
-            </li>
-            <SignedIn>
-              <li>
-                <button
-                  onClick={toggleMobileSubmenu}
-                  className='flex w-full items-center justify-between py-2 font-medium focus:outline-none'
-                >
-                  Console &nbsp;
-                  {mobileSubmenuOpen ? (
-                    <ChevronUp className='h-4 w-4' />
-                  ) : (
-                    <ChevronDown className='h-4 w-4' />
                   )}
-                </button>
-                {mobileSubmenuOpen && (
-                  <ul className='flex flex-col gap-2 text-xs'>
-                    <li>
-                      <Link
-                        href='/protected/products'
-                        onClick={() => setDrawerOpen(false)}
-                      >
-                        Add Products
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href='/protected/category'
-                        onClick={() => setDrawerOpen(false)}
-                      >
-                        Add Category
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href='/protected/types'
-                        onClick={() => setDrawerOpen(false)}
-                      >
-                        Add Type
-                      </Link>
-                    </li>
-                  </ul>
-                )}
-              </li>
-            </SignedIn>
-          </ul>
-        </div>
-      </aside>
-    </header>
+                </li>
+              </SignedIn>
+            </ul>
+          </div>
+        </aside>
+      </header>
+      <Separator className='hidden md:block' />
+    </>
   );
 }

@@ -1,7 +1,8 @@
-'use client'
+'use client';
 
-import { ThemeProvider, useTheme } from 'next-themes'
-import { Toaster } from '@/components/ui/sonner'
+import { ThemeProvider, useTheme } from 'next-themes';
+import { Toaster } from '@/components/ui/sonner';
+import { ConvexClientProvider } from '@/app/ConvexClientProvider';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -11,14 +12,14 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       defaultTheme='dark'
       disableTransitionOnChange
     >
-      {children}
+      <ConvexClientProvider>{children}</ConvexClientProvider>
       <ToasterProvider />
     </ThemeProvider>
-  )
+  );
 }
 
 function ToasterProvider() {
-  const { resolvedTheme } = useTheme()
+  const { resolvedTheme } = useTheme();
 
   return (
     <Toaster
@@ -27,5 +28,5 @@ function ToasterProvider() {
       position='top-center'
       theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
     />
-  )
+  );
 }
