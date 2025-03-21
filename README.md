@@ -23,8 +23,8 @@ Before trying to run this project locally, first you should look up on the follo
 After cloning the project from this repository, you should do these steps before trying to run the project locally.
 
 - create a [`.env`] file at the root folder. 
-- go to Clerk Website[https://clerk.com] to create an account and follow the instructions to set up env variables.
-- go to Convex Website[https://convex.dev] to create an account and follow the instructions to set up env variables.
+- go to [Clerk Website](https://clerk.com) to create an account and follow the instructions to set up env variables.
+- go to [Convex Website](https://convex.dev) to create an account and follow the instructions to set up env variables.
 - copy and paste [`NEXT_PUBLIC_CLERK_SIGN_IN_URL`] and [`NEXT_PUBLIC_CLERK_SIGN_UP_URL`] as provided in [`.env.example`] file.
 - install dependencies
   ```bash
